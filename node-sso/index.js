@@ -1,13 +1,14 @@
 const express = require('express');
 const session = require('express-session');
 const { Issuer, generators } = require('openid-client');
+require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(
     session({
-        secret: 'my-secret-session-key-demo',
+        secret: process.env.SESSION_SECRET || 'fallback-secret',
         resave: false,
         saveUninitialized: true,
     })
@@ -18,11 +19,11 @@ let client;
 
 async function setupKeycloak() {
     try {
-        keycloakIssuer = await Issuer.discover('http://localhost:8080/realms/mobo');
+        keycloakIssuer = await Issuer.discover(process.env.KEYCLOAK_URL);
         client = new keycloakIssuer.Client({
-            client_id: 'node-app',
-            client_secret: 'node-secret',
-            redirect_uris: ['http://localhost:3000/callback'],
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
+            redirect_uris: [process.env.REDIRECT_URL],
             response_types: ['code'],
         });
         console.log('✅ Keycloak configurado exitosamente para Node.js');

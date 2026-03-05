@@ -2,6 +2,7 @@
     "name": "mobo/php-sso",
     "description": "Demo SSO con PHP",
     "require": {
-        "jumbojett/openid-connect-php": "^0.9.10"
+        "jumbojett/openid-connect-php": "^0.9.10",
+        "vlucas/phpdotenv": "^5.6"
     }
 }

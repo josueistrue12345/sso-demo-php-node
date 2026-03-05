@@ -2,10 +2,14 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use Jumbojett\OpenIDConnectClient;
+use Dotenv\Dotenv;
 
-$keycloak_url = 'http://localhost:8080/realms/mobo';
-$client_id = 'php-app';
-$client_secret = 'php-secret';
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$keycloak_url = $_ENV['KEYCLOAK_URL'];
+$client_id = $_ENV['CLIENT_ID'];
+$client_secret = $_ENV['CLIENT_SECRET'];
 
 $oidc = new OpenIDConnectClient($keycloak_url, $client_id, $client_secret);
 
@@ -16,12 +20,11 @@ $oidc->setVerifyPeer(false);
 
 session_start();
 
-// Si se recibe `logout`, cerramos sesión localmente y redijimos a Keycloak
 if (isset($_GET['logout'])) {
     $idToken = $_SESSION['id_token'] ?? '';
     session_destroy();
     if ($idToken) {
-        $logoutUrl = $keycloak_url . '/protocol/openid-connect/logout?post_logout_redirect_uri=' . urlencode('http://localhost:8001') . '&id_token_hint=' . $idToken;
+        $logoutUrl = $keycloak_url . '/protocol/openid-connect/logout?post_logout_redirect_uri=' . urlencode($_ENV['REDIRECT_URL']) . '&id_token_hint=' . $idToken;
         header("Location: $logoutUrl");
     } else {
         header("Location: /");
@@ -31,7 +34,7 @@ if (isset($_GET['logout'])) {
 
 // Configurar la URL de redirección explícita antes de cualquier autenticación
 // Así la librería sabe exactamente a dónde regresar después del login en Keycloak
-$oidc->setRedirectURL('http://localhost:8001/');
+$oidc->setRedirectURL($_ENV['REDIRECT_URL']);
 
 // Si presionan el botón de login manual o si Keycloak nos está mandando de regreso un "code", iniciamos el flujo
 if (isset($_GET['login']) || isset($_GET['code'])) {
