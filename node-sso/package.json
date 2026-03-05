@@ -1,0 +1,14 @@
+{
+    "name": "node-sso",
+    "version": "1.0.0",
+    "description": "Demo de SSO con Node.js y Keycloak",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "express-session": "^1.17.3",
+        "openid-client": "^5.4.2"
+    }
+}

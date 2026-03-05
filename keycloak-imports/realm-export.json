@@ -1,0 +1,42 @@
+{
+  "realm": "mobo",
+  "enabled": true,
+  "users": [
+    {
+      "username": "demo",
+      "enabled": true,
+      "email": "demo@mobo.com",
+      "firstName": "Usuario",
+      "lastName": "Demo",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "12345",
+          "temporary": false
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "node-app",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "node-secret",
+      "redirectUris": ["http://localhost:3000/*"],
+      "webOrigins": ["+"],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true
+    },
+    {
+      "clientId": "php-app",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "php-secret",
+      "redirectUris": ["http://localhost:8001/*"],
+      "webOrigins": ["+"],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true
+    }
+  ]
+}
